@@ -7,8 +7,8 @@ const userRouter = require('./routes/user-routes');
 dotenv.config();
 
 //middleware
-app.use("/user", userRouter)
-
+app.use(express.json());
+app.use("/user", userRouter);
 
 mongoose.connect("mongodb+srv://ynagoorgani:AUgG7jFSP2MfKNPd@movie-system.bj9rdkw.mongodb.net/Movies?retryWrites=true&w=majority")
 
