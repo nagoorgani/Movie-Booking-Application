@@ -17,8 +17,8 @@ const getAllUser = async (req, res, next) => {
     }
 
     return res.status(200).json({ users })
-}
-    ;
+};
+
 const signup = async (req, next, res) => {
     const { name, email, password } = req.body;
     if (
@@ -35,7 +35,7 @@ const signup = async (req, next, res) => {
     let users;
     try {
         users = new user({ name, email, password: hashedPassword });
-        users = await users.save();
+        await users.save();
 
     } catch (err) {
         return console.log(err);
@@ -45,7 +45,7 @@ const signup = async (req, next, res) => {
         return res.status(500).json({ message: "Unexpected Error Occurred" })
     }
 
-    return res.status(201).json({ users });
+    return res.status(201).json({id: users._id });
 }
 
 
@@ -76,7 +76,7 @@ const updateUser = async (req, res, next) => {
     if (!users) {
         return res.status(500).json({ message: "Something went wrong" })
     }
-    res.status(200).json({ message: "Updated successfully" })
+    res.status(200).json({ message: "Deleted successfully" })
 }
 const deleteUser = async (req, res, next) => {
     const id = req.params.id;
@@ -92,7 +92,7 @@ const deleteUser = async (req, res, next) => {
     if (!users) {
         return res.status(500).json({ message: "Something went wrong" })
     }
-    res.status(200).json({ message: "Deleted successfully" })
+    res.status(200).json({ message: "Updated successfully" })
 
 }
 const login = async (req, res, next) => {
@@ -111,7 +111,7 @@ const login = async (req, res, next) => {
         return console.log(err);
     }
     if (!existingUser) {
-        return res.status(400).json({ message: "Unable to find user from this Id" })
+        return res.status(400).json({ message: "Unable to find user frm this Id" })
     }
 
     const isPasswordCorrect = bcrypt.compareSync(password, existingUser.password);
@@ -122,4 +122,4 @@ const login = async (req, res, next) => {
     return res.status(200).json({ message: "Login SUccessfully" })
 }
 
-module.exports = { getAllUser, signup, updateUser, deleteUser,login }
+module.exports = { getAllUser, signup, updateUser, deleteUser, login }       

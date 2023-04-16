@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bookingSchema = new mongoose.Schema({
     movie: {
-        type: 'string',
+        type: 'String',
         required: true
     },
     date: {
@@ -11,11 +11,11 @@ const bookingSchema = new mongoose.Schema({
     seatNumber: {
         type: Number,
         required: true
-    }
-    user: {
-        type: 'string',
+    },
+    user:{
+    type: 'String',
         required: true
     }
-})   
+})
 const Booking = mongoose.model('Booking', bookingSchema);
 module.exports = Booking;
