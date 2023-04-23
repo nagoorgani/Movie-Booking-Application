@@ -3,9 +3,28 @@ import { Box, Button, Dialog, FormLabel, IconButton, TextField, Typography } fro
 import React, { useState } from 'react'
 const labelStyle = { mt: 1, mb: 2 };
 
-const AuthForm = () => {
-    const [isSignup, setIsSignup] = useState(false)
+const AuthForm = ({ onSubmit,isAdmin }) => {
+    const [inputs, setInputs] = useState({
+        name: "",
+        email: "",
+        password: ""
+    });
+    const [isSignup, setIsSignup] = useState(false);
+    const handleChange = (e) => {
+        setInputs((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+            [e.target.email]: e.target.email,
+            [e.target.password]: e.target.password,
 
+        })) 
+    };
+    
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit({ inputs,signup: isAdmin?false:isSignup});
+    };
     return (
         <Dialog PaperProps={{style:{borderRadius:20}}} open={true
         }>
@@ -18,7 +37,7 @@ const AuthForm = () => {
             {isSignup ? "Signup" : "Login" }
 
             </Typography>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <Box
                     padding={6}
                     display={'flex'} justifyContent={'center'} flexDirection="column"
@@ -26,11 +45,14 @@ const AuthForm = () => {
                     margin="auto"
                     alignContent={'center'}
                 > 
-                    {isSignup && (
+                    {!isAdmin && isSignup && (
                         <>
                             {" "}
-                        <FormLabel sx={labelStyle}>name</FormLabel>
-                    <TextField
+                            <FormLabel sx={labelStyle}>name</FormLabel>
+                            
+                            <TextField
+                                value={inputs.name}
+                                onChange={handleChange}
                         margin="normal"
                         variant='standard'
                         type={'text'}
@@ -42,6 +64,8 @@ const AuthForm = () => {
                     
                     <FormLabel sx={labelStyle}>Email</FormLabel>
                     <TextField
+                        value={inputs.email}
+                        onChange={handleChange}
                         margin="normal"
                         variant='standard'
                         type={'email'}
@@ -50,6 +74,8 @@ const AuthForm = () => {
 
                     <FormLabel sx={labelStyle}>Password</FormLabel>  
                     <TextField
+                        value={inputs.password}
+                        onChange={handleChange}
                         margin="normal"
                         variant='standard'
                         type={'password'}
@@ -63,11 +89,11 @@ const AuthForm = () => {
                         {isSignup ? "Signup" : "Login" }
                     </Button>
                     
-                    <Button onClick={()=>setIsSignup(!isSignup)}
+                    {!isAdmin && <Button onClick={()=>setIsSignup(!isSignup)}
                         sx={{ mt: 2, borderRadius: 10 }}
                         fullWidth>
                         Switch To   {isSignup?"Login": "Signup"}
-                    </Button>
+                    </Button>}
 
 
                 </Box>
