@@ -1,33 +1,55 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import Admin from "./components/Admin/Admin";
-import Auth from "./components/Auth/Auth";
+import Admin from "./components/admin/Admin";
+import Auth from "./components/auth/Auth";
+import Booking from "./components/Bookings/Booking";
 import Header from "./components/Header";
-import Homepage from "./components/Homepage";
+import Homepage from "./components/HomePage/Homepage";
+import AddMovies from "./components/Movies/AddMovies";
 import Movies from "./components/Movies/Movies";
+import UserProfile from "./Profile/UserProfile";
+//import UserProfile from "./Profile/UserProfile";
+import { adminActions, userActions } from "./store";
 
 function App() {
-  const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
-  const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  
-  console.log("isAdminLoggedIn", isAdminLoggedIn);
-  console.log("isUserLoggedIn", isUserLoggedIn);
+  const dispatch=useDispatch();
+  const isAdminLoggedIn=useSelector((state)=>state.admin.isLoggedIn);
+  const isUserLoggedIn=useSelector((state)=>state.user.isLoggedIn);
+  console.log("isAdminLoggedIN",isAdminLoggedIn)
+  console.log("isUserLoggedIN",isUserLoggedIn)
 
+  useEffect(()=>{
+    if(localStorage.getItem("userId"))
+    {
+      dispatch(userActions.login());
+    }
+    else if(localStorage.getItem("adminId"))
+    {
+      dispatch(adminActions.login());
+    }
+  },[])
   return (
     <div>
-<Header />
-      <section>
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/movies" element={<Movies/>} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/auth" element={<Auth/>} />
-
-
-</Routes>
+    {/* Header */}
+    <Header/>
+    <section>
+      <Routes>
+      <Route path="/" element={<Homepage/>}/>
+      <Route path="/movies" element={<Movies/>}/>
+      <Route path="/admin" element={<Admin/>}/>
+      <Route path="/auth" element={<Auth/>}/>
+      <Route path="/booking/:id" element={<Booking/>}/>
+      {/* <Route path="/user" element={<UserProfile/>}/> */}
+      <Route path="/user" element={<UserProfile/>}/>
+      <Route path="/add" element={<AddMovies/>}/>
+      </Routes>
     </section>
-  </div>
-  )
+    </div>
+
+  );
 }
 
 export default App;
+
+
