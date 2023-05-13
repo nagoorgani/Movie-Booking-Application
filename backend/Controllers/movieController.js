@@ -3,7 +3,7 @@ const jwt=require('jsonwebtoken');
 const mongoose=require('mongoose');
 const admin = require("../Models/admin");
 const addMovies=async(req,res,next)=>{
-    const extractToken= req.headers.authorization.split("")[1];
+    const extractToken= req.headers.authorization.Split("")[1];
 
     if(!extractToken && extractToken.trim()===""){
         return res.status(401).json({
